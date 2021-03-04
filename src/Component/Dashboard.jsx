@@ -24,6 +24,7 @@ export default function AutoGrid() {
       <Grid container spacing={3} >
         <Grid item xs={12} sm={8} >
           <Paper className={classes.paper}>
+              Global Data
             <GlobalData />
           </Paper>
         </Grid>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import CountUp from 'react-countup';
+import CountUp from "react-countup";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,29 +26,21 @@ const useStylesTypography = makeStyles({
 export default function GlobalData() {
   const classes = useStyles();
   const classTypography = useStylesTypography();
-  const [covidData, setCovidData] = useState()
+  const [covidData, setCovidData] = useState();
 
   useEffect(() => {
     async function fetchData() {
-      const apiResponse = await fetch(
-        "https://covid-19-data.p.rapidapi.com/country?name=Pakistan",
+      await fetch("https://covid19.mathdro.id/api/")
+        .then((response) => response.json())
+        .then((data) => 
         {
-          method: "GET",
-          headers: {
-            "x-rapidapi-key":
-              "ebe4bc8015msh4148955c1dd0f12p163841jsnaa1e22e1a37b",
-            "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
-          },
-        }
-      );
-      
-      console.log(apiResponse);
-      const resp = await apiResponse.json();
-      setCovidData(resp);
-    
+            console.log(data)
+              setCovidData(data);
+        });
+
     }
     fetchData();
-  },[]);
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -56,34 +48,23 @@ export default function GlobalData() {
         <div className={classTypography.root}>
           Confirmed
           <Typography variant="h4" component="h2" gutterBottom>
-              {covidData && 
-            <CountUp separator={','} end={covidData[0].confirmed} />}
-
+            {covidData && 
+            <CountUp separator={','} end={covidData.confirmed.value} />}
           </Typography>
         </div>
       </Paper>
       <Paper elevation={3}>
         Recovered
         <Typography variant="h4" component="h2" gutterBottom>
-            {covidData && 
-            <CountUp separator={','} end={covidData[0].recovered} />}
-
-        </Typography>
-      </Paper>
-      <Paper elevation={3}>
-        Critical
-        <Typography variant="h4" component="h2" gutterBottom>
-            {covidData && 
-            <CountUp separator={','} end={covidData[0].critical} />}
-
+          {covidData && 
+            <CountUp separator={','} end={covidData.recovered.value} />}
         </Typography>
       </Paper>
       <Paper elevation={3}>
         Deaths
         <Typography variant="h4" component="h2" gutterBottom>
-            {covidData && 
-            <CountUp separator={','} end={covidData[0].deaths} />}
-
+          {covidData && 
+            <CountUp separator={','} end={covidData.deaths.value} />}
         </Typography>
       </Paper>
     </div>
